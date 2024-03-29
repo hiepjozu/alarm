@@ -148,8 +148,8 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
 
                 DispatchQueue.main.async {
                     self.timers[id] = Timer.scheduledTimer(timeInterval: delayInSeconds, target: self, selector: #selector(self.executeTask(_:)), userInfo: id, repeats: false)
-                    SwiftAlarmPlugin.scheduleAppRefresh()
                 }
+                SwiftAlarmPlugin.scheduleAppRefresh()
             }
             result(true)
         } else {
@@ -389,9 +389,11 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
     }
 
     private func stopNotificationOnKillService() {
-        if audioPlayers.isEmpty && observerAdded {
-            NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
-            observerAdded = false
+        safeModifyResources {
+            if self.audioPlayers.isEmpty && self.observerAdded {
+                NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
+                self.observerAdded = false
+            }
         }
     }
 
