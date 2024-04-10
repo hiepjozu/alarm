@@ -307,8 +307,7 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
         }
 
         self.stopSilentSound()
-        // Fix noti kill app not working
-        // self.stopNotificationOnKillService()
+        self.stopNotificationOnKillService()
 
         result(true)
     }
